@@ -50,9 +50,11 @@ module.exports = function (eleventyConfig) {
       .replace(/(^-|-$)/g, "");
   });
 
-  eleventyConfig.addFilter("dateToRfc3339", function (date) {
-    return new Date(date).toISOString().split("T")[0];
-  });
+eleventyConfig.addFilter("dateToRfc3339", function (date) {
+  if (!date) return new Date().toISOString().split("T")[0];
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? new Date().toISOString().split("T")[0] : d.toISOString().split("T")[0];
+});
 
   eleventyConfig.addFilter("excerpt", function (str, length = 200) {
     if (!str) return "";
