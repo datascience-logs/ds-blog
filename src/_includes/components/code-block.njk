@@ -1,0 +1,10 @@
+<div class="code-block" data-lang="{{ lang | default('text') }}">
+  <div class="code-header">
+    <span class="code-lang" aria-label="Language: {{ lang | default('text') }}">{{ lang | default('text') }}</span>
+    <button class="copy-button" type="button" aria-label="Copy code to clipboard">
+      <span class="copy-text">Copy</span>
+      <span class="copied-text" aria-hidden="true">Copied!</span>
+    </button>
+  </div>
+  <pre class="language-{{ lang | default('text') }}"><code class="language-{{ lang | default('text') }}">{{ content }}</code></pre>
+</div>

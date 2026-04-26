@@ -1,0 +1,72 @@
+---
+layout: base
+---
+<article class="post" itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="post-header">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts/">Posts</a></li>
+        <li aria-current="page">{{ title }}</li>
+      </ol>
+    </nav>
+
+    <h1 class="post-title" itemprop="headline">{{ title }}</h1>
+
+    <div class="post-meta">
+      <time datetime="{{ date | dateToRfc3339 }}" itemprop="datePublished">{{ date | date: "%B %d, %Y" }}</time>
+      {% if estimatedTime %}
+        <span class="meta-separator" aria-hidden="true">•</span>
+        <span class="reading-time">{{ estimatedTime }}</span>
+      {% endif %}
+    </div>
+
+    {% if tags and tags.length %}
+    <ul class="post-tags" role="list" aria-label="Post tags">
+      {% for tag in tags %}
+        <li><a href="/posts/tag/{{ tag | slugify }}/" class="tag">{{ tag }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </header>
+
+  <div class="post-layout">
+    <aside class="post-toc" aria-label="Table of contents">
+      <details>
+        <summary><h2>Table of Contents</h2></summary>
+        <nav id="toc-nav" aria-label="Article sections"></nav>
+      </details>
+    </aside>
+
+    <div class="post-content" itemprop="articleBody">
+      {{ content | safe }}
+    </div>
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-navigation">
+      {% if collections.posts %}
+        {% set currentIndex = 0 %}
+        {% for post in collections.posts %}
+          {% if post.url == page.url %}
+            {% set currentIndex = loop.index0 %}
+          {% endif %}
+        {% endfor %}
+
+        {% if collections.posts[currentIndex - 1] %}
+          <a href="{{ collections.posts[currentIndex - 1].url }}" class="nav-link nav-prev">
+            <span class="nav-label">← Previous</span>
+            <span class="nav-title">{{ collections.posts[currentIndex - 1].title }}</span>
+          </a>
+        {% endif %}
+
+        {% if collections.posts[currentIndex + 1] %}
+          <a href="{{ collections.posts[currentIndex + 1].url }}" class="nav-link nav-next">
+            <span class="nav-label">Next →</span>
+            <span class="nav-title">{{ collections.posts[currentIndex + 1].title }}</span>
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </footer>
+</article>

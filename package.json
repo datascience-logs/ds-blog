@@ -1,0 +1,22 @@
+{
+  "name": "datascience-logs-blog",
+  "version": "1.0.0",
+  "description": "A production-ready Markdown blog system for Data Science Logs",
+  "scripts": {
+    "start": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "lint": "echo 'No linter configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.0.1",
+    "markdown-it-task-lists": "^2.1.1",
+    "markdown-it-footnote": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

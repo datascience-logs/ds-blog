@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>{% if title %}{{ title }} | {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
+  <meta name="author" content="{{ site.title }}" />
+
+  <meta property="og:title" content="{% if title %}{{ title }}{% else %}{{ site.title }}{% endif %}" />
+  <meta property="og:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
+  <meta property="og:type" content="{% if layout == 'post' %}article{% else %}website{% endif %}" />
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+  {% if ogImage %}<meta property="og:image" content="{{ site.url }}{{ ogImage }}" />{% endif %}
+  <meta property="og:site_name" content="{{ site.title }}" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="{{ site.twitterHandle }}" />
+  <meta name="twitter:title" content="{% if title %}{{ title }}{% else %}{{ site.title }}{% endif %}" />
+  <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
+
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.url }}/feed.xml" />
+
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/variables.css" />
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="/assets/css/layout.css" />
+
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <nav class="nav-container" aria-label="Main navigation">
+      <a href="/" class="brand" aria-label="{{ site.title }} home">
+        <span class="brand-icon" aria-hidden="true">📊</span>
+        <span class="brand-text">{{ site.title }}</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts/">All Posts</a></li>
+        <li><a href="/admin/#/" class="nav-admin-link">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content" class="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+      <p class="footer-brand">{{ site.title }}</p>
+      <p class="footer-copy">&copy; {% currentYear %} All rights reserved.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#main-content">Back to top</a>
+        <span aria-hidden="true">•</span>
+        <a href="/admin/#/">Admin Panel</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="/assets/js/copy-code.js" defer></script>
+  <script src="/assets/js/toc.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

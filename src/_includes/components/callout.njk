@@ -1,0 +1,6 @@
+<div class="callout callout-{{ type | default('tip') }}" role="note">
+  <span class="callout-icon" aria-hidden="true">{% if type == 'warning' %}⚠️{% elif type == 'verified' %}✅{% elif type == 'note' %}📝{% else %}💡{% endif %}</span>
+  <div class="callout-content">
+    {{ content | safe }}
+  </div>
+</div>

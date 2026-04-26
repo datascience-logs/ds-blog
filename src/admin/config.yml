@@ -1,0 +1,99 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: "src/assets/images"
+public_folder: "/assets/images"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "src/posts"
+    extension: "md"
+    format: "frontmatter"
+    create: true
+    slug: "{{slugify title}}"
+    preview_path: "posts/{{slugify title}}/index.html"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "Clear, keyword-rich title for the post"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        hint: "One-sentence value proposition for SEO and social previews"
+
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm"
+        format: "YYYY-MM-DD"
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options:
+          - { label: "Draft", value: "draft" }
+          - { label: "Published", value: "published" }
+        default: "draft"
+
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        allow_add: true
+        hint: "Add relevant tags (e.g., python, machine-learning, beginner)"
+
+      - label: "Estimated Time"
+        name: "estimatedTime"
+        widget: "string"
+        hint: "e.g., '2-3 hours', '30 minutes'"
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Write your content in Markdown"
+        modes:
+          - raw
+          - markdown
+        default: |
+          ## 💡 Why this exists
+
+          [Problem + who it helps + outcome]
+
+          ## ⚡ What you'll learn
+
+          - [Concrete outcome 1]
+          - [Concrete outcome 2]
+
+          ## 🛠️ Before you start
+
+          [Prerequisites with links]
+
+          ## 📦 Setup
+
+          ```bash
+          # Copy-paste ready commands
+          npm install -g something
+          ```
+
+          ## 📖 Content
+
+          Your content here...
+
+          ## ✅ Summary
+
+          [Key takeaways]
+
+          ## 🔗 Resources
+
+          - [Resource 1](https://example.com)
+          - [Resource 2](https://example.com)
+    preview:
+      date: "{{date}}"
+      title: "{{title}}"
+      body: "{{body}}"

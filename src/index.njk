@@ -1,0 +1,73 @@
+---
+layout: base
+title: "Home"
+---
+
+<section class="home-hero">
+  <h1>{{ site.title }}</h1>
+  <p>{{ site.description }}</p>
+  <a href="/admin/#/" class="btn btn-primary">Start Writing</a>
+</section>
+
+<div class="container">
+  <input
+    type="search"
+    class="search-input"
+    id="search-input"
+    placeholder="Search posts..."
+    aria-label="Search posts"
+  />
+
+  <div class="posts-grid" id="posts-grid">
+    {% for post in collections.posts %}
+    <article class="post-card">
+      <h2 class="post-card-title">
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+      </h2>
+      <div class="post-card-meta">
+        <time datetime="{{ post.data.date | dateToRfc3339 }}">{{ post.data.date | date: "%B %d, %Y" }}</time>
+        {% if post.data.estimatedTime %}
+          <span>{{ post.data.estimatedTime }}</span>
+        {% endif %}
+      </div>
+      <p class="post-card-excerpt">{{ post.data.description }}</p>
+      {% if post.data.tags and post.data.tags.length %}
+        <ul class="post-card-tags">
+          {% for tag in post.data.tags %}
+            <li><span class="tag">{{ tag }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+
+  {% if collections.posts.length == 0 %}
+    <p style="text-align: center; color: var(--text-muted);">No posts yet. <a href="/admin/#/collections/posts/new">Create your first post</a>.</p>
+  {% endif %}
+</div>
+
+<script>
+  (function() {
+    var searchInput = document.getElementById('search-input');
+    var postsGrid = document.getElementById('posts-grid');
+
+    if (!searchInput || !postsGrid) return;
+
+    var cards = postsGrid.querySelectorAll('.post-card');
+
+    searchInput.addEventListener('input', function(e) {
+      var query = e.target.value.toLowerCase();
+
+      cards.forEach(function(card) {
+        var title = card.querySelector('.post-card-title').textContent.toLowerCase();
+        var excerpt = card.querySelector('.post-card-excerpt').textContent.toLowerCase();
+        var tags = card.querySelector('.post-card-tags') ? card.querySelector('.post-card-tags').textContent.toLowerCase() : '';
+
+        var matches = title.includes(query) || excerpt.includes(query) || tags.includes(query);
+
+        card.style.display = matches ? '' : 'none';
+      });
+    });
+  })();
+</script>
