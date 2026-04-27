@@ -3,367 +3,158 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — Data Science Diaries</title>
+  <title>VoidWriter Admin — Data Science Diaries</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Space Grotesk, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <style>
-    /* ── CSS Reset & base ─────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    /* ── 1. Global Reset & Variables ────────────────── */
     :root {
-      --bg:       #0A0F1C;
-      --surface:  #111827;
-      --card:     #1A2235;
-      --border:   rgba(255,255,255,0.08);
-      --accent:   #3B82F6;
-      --accent-d: rgba(59,130,246,0.15);
-      --text:     #E5E7EB;
-      --muted:    #6B7280;
-      --font:     'Inter', system-ui, -apple-system, sans-serif;
+      --bg-main: #0C1321;
+      --bg-surface: #111827;
+      --bg-card: #19202E;
+      --bg-input: #1F2937;
+      --bg-body: #070E1C;
+      
+      --primary: #B6C4FF;
+      --primary-dim: #90A8FF;
+      --secondary: #FFB690;
+      --secondary-hover: #EC6A06;
+      
+      --text-primary: #DCE2F6;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+      
+      --border: rgba(255,255,255,0.06);
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
     }
 
-    html, body { height: 100%; background: var(--bg); font-family: var(--font); color: var(--text); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Loading splash ───────────────────────────────── */
+    html, body { 
+      height: 100%; 
+      background: var(--bg-main); 
+      font-family: var(--font-body); 
+      color: var(--text-primary);
+      overflow: hidden;
+    }
+
+    /* ── 2. Premium Loading Splash ───────────────────── */
     #cms-loading {
       position: fixed;
       inset: 0;
-      background: var(--bg);
+      background: var(--bg-main);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
       z-index: 9999;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #cms-loading.hidden {
       opacity: 0;
-      visibility: hidden;
+      pointer-events: none;
     }
 
     .splash-logo {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      border-radius: 14px;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--primary), #8B5CF6);
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 0 40px rgba(182, 196, 255, 0.2);
     }
 
     .splash-logo svg {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       color: #fff;
-      stroke: currentColor;
+    }
+
+    .splash-text {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .splash-title {
-      font-size: 1.25rem;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--text);
     }
 
     .splash-sub {
-      font-size: 0.8125rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
     .splash-spinner {
-      width: 32px;
-      height: 32px;
-      border: 2px solid rgba(59,130,246,0.2);
-      border-top-color: #3B82F6;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Deep-override Decap CMS UI ───────────────────── */
-
-    /* App shell background */
-    #nc-root,
-    [class*="App__"],
-    [class*="AppBody"] {
-      font-family: var(--font) !important;
-      background: var(--bg) !important;
-    }
-
-    /* Top nav / header bar */
-    [class*="AppHeader"],
-    header[class*="Header"] {
-      background: rgba(10,15,28,0.9) !important;
-      backdrop-filter: blur(16px) !important;
-      border-bottom: 1px solid var(--border) !important;
-      box-shadow: none !important;
-    }
-
-    /* Sidebar */
-    [class*="Nav__"],
-    [class*="Sidebar"],
-    nav[class*="Nav"] {
-      background: var(--surface) !important;
-      border-right: 1px solid var(--border) !important;
-    }
-
-    /* Nav items */
-    [class*="Nav__"] a,
-    [class*="NavLink"] {
-    /* ── 1. Global Reset & Variables ────────────────── */
-    :root {
-      --bg-editor: #0B1220;
-      --bg-side: #111827;
-      --bg-input: #1F2937;
-      --bg-body: #0F172A;
-
-      --text-main: #E5E7EB;
-      --text-dim: #9CA3AF;
-      --accent: #3B82F6;
-      --accent-hover: #2563EB;
-      --border: rgba(255,255,255,0.05);
-      --font: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      background: var(--bg-editor) !important;
-      color: var(--text-main) !important;
-      font-family: var(--font) !important;
-      margin: 0;
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 2px;
+      position: relative;
       overflow: hidden;
     }
 
-    /* Remove ALL default backgrounds */
-    #nc-root div, #nc-root main, #nc-root header, #nc-root section {
-      background-color: transparent !important;
+    .splash-spinner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 50%;
+      background: var(--primary);
+      animation: load 1.5s infinite ease-in-out;
     }
 
-    /* ── 2. 3-Column Editor Layout ──────────────────── */
+    @keyframes load {
+      0% { left: -50%; }
+      100% { left: 100%; }
+    }
+
+    /* ── 3. Decap CMS UI Overrides (VoidWriter Pro) ────── */
     
-    /* Target the main editor container */
-    [class*="EditorContainer"] {
-      display: grid !important;
-      grid-template-columns: 300px 1fr 400px !important;
-      height: 100vh !important;
-      padding-top: 60px !important; /* Top bar space */
-    }
-
-    /* LEFT: Metadata Panel */
-    [class*="ControlPane"] {
-      grid-column: 1 / 3 !important; /* We'll use grid inside this */
-      display: grid !important;
-      grid-template-columns: 300px 1fr !important;
-      padding: 0 !important;
-      overflow: hidden !important;
-      border-right: 1px solid var(--border) !important;
-    }
-
-    /* Force the non-body fields to the left column */
-    [class*="ControlPane"] > div {
-      grid-column: 1 !important;
-      background: var(--bg-side) !important;
-      padding: 20px !important;
-      height: 100% !important;
-      overflow-y: auto !important;
-    }
-
-    /* Force the Body (Markdown) field to the center column */
-    [class*="ControlPane"] > div[class*="FieldContainer"]:has([class*="Markdown"]) {
-      grid-column: 2 !important;
-      background: var(--bg-editor) !important;
-      padding: 20px !important;
-      border-left: 1px solid var(--border) !important;
-      margin-top: 0 !important;
-    }
-
-    /* RIGHT: Preview Panel */
-    [class*="PreviewPane"] {
-      grid-column: 3 !important;
-      background: var(--bg-side) !important;
-      padding: 30px !important;
-      border-left: 1px solid var(--border) !important;
-      overflow-y: auto !important;
-    }
-
-    /* ── 3. Top Bar Design ──────────────────────────── */
-    [class*="EditorHeader"],
-    [class*="TopBar"] {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      height: 60px !important;
-      background: var(--bg-side) !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      padding: 0 24px !important;
-      border-bottom: 1px solid var(--border) !important;
-      z-index: 1000 !important;
-    }
-
-    /* Metadata Panel Header */
-    [class*="EditorHeader"]::before {
-      content: "METADATA" !important;
-      width: 300px !important;
-      color: var(--text-dim) !important;
-      font-size: 11px !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.1em !important;
-    }
-
-    /* ── 4. Form Fields & Typography ────────────────── */
-    
-    [class*="FieldLabel"], label {
-      font-size: 12px !important;
-      color: var(--text-dim) !important;
-      font-weight: 600 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.05em !important;
-      margin-bottom: 8px !important;
-      background: transparent !important;
-      border: none !important;
-    }
-
-    input, textarea, [class*="Input"] {
-      width: 100% !important;
-      background: var(--bg-input) !important;
-      border: 1px solid var(--border) !important;
-      color: var(--text-main) !important;
-      padding: 12px !important;
-      border-radius: 8px !important;
-      font-size: 14px !important;
-      outline: none !important;
-      transition: border-color 0.2s !important;
-    }
-
-    input:focus, textarea:focus {
-      border-color: var(--accent) !important;
-    }
-
-    /* ── 5. Markdown Editor Specifics ───────────────── */
-    
-    /* The Markdown Area */
-    [class*="EditorControlBar"] + div,
-    [contenteditable] {
-      background: var(--bg-body) !important;
-      color: var(--text-main) !important;
-      font-family: 'JetBrains Mono', monospace !important;
-      border: none !important;
-      padding: 24px !important;
-      line-height: 1.8 !important;
-    }
-
-    /* Editor Toolbar */
-    [class*="EditorToolbar"] {
-      background: var(--bg-input) !important;
-      border: 1px solid var(--border) !important;
-      border-bottom: none !important;
-      border-radius: 8px 8px 0 0 !important;
-      margin-bottom: 0 !important;
-    }
-
-    /* ── 6. Preview Styles ──────────────────────────── */
-    [class*="PreviewPane"] h1, 
-    [class*="PreviewPane"] h2,
-    [class*="PreviewPane"] h3 {
-      color: var(--text-main) !important;
-      margin-top: 0 !important;
-    }
-
-    [class*="PreviewPane"] p {
-      color: var(--text-dim) !important;
-      line-height: 1.7 !important;
-    }
-
-    /* ── 7. Buttons ─────────────────────────────────── */
-    
-    [class*="PublishButton"],
-    [class*="Button-success"] {
-      background: var(--accent) !important;
-      color: white !important;
-      padding: 10px 24px !important;
-      border-radius: 8px !important;
-      border: none !important;
-      font-weight: 700 !important;
-      cursor: pointer !important;
-      transition: background 0.2s !important;
-    }
-
-    [class*="PublishButton"]:hover {
-      background: var(--accent-hover) !important;
-    }
-
-    /* ── 8. Utility Fixes ───────────────────────────── */
-    
-    /* Scrollbars */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-editor); }
-    ::-webkit-scrollbar-thumb { background: var(--bg-input); border-radius: 10px; }
-    
-    /* Hide blue blobs and white panels */
-    [class*="ControlLabel"] { background: transparent !important; }
-    [class*="FieldContainer"] { border: none !important; margin-bottom: 24px !important; }
-  </style>
-font-weight: 600 !important;
-      border-radius: 6px !important;
-      transition: all 0.15s ease !important;
-    }
-
-    /* ── 2. Base Reset & Visibility ───────────────────── */
-    * { box-sizing: border-box; }
-
-    body {
-      background: var(--bg-main) !important;
-      color: var(--text-primary) !important;
-      font-family: var(--font) !important;
-      font-size: 14px !important;
-      line-height: 1.6 !important;
-      margin: 0;
-    }
-
-    p, span, label { color: var(--text-secondary) !important; }
-    h1, h2, h3, strong { color: var(--text-primary) !important; }
-
-    /* ── 3. Layout Structure ─────────────────────────── */
-    #nc-root [class*="AppContainer"] {
-      display: grid !important;
-      grid-template-columns: 240px 1fr !important;
-      height: 100vh !important;
+    /* Global Backgrounds */
+    #nc-root, 
+    [class*="AppContainer"],
+    [class*="AppBody"] {
       background: var(--bg-main) !important;
     }
 
-    /* ── 4. Sidebar Design ───────────────────────────── */
+    /* Side Sidebar (Collections List) */
     [class*="SidebarContainer"] {
       background: var(--bg-surface) !important;
       border-right: 1px solid var(--border) !important;
-      padding: 24px 16px !important;
-      height: 100vh !important;
+      padding: 32px 16px !important;
     }
 
     [class*="SidebarNavLink"] {
-      padding: 10px 14px !important;
-      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      border-radius: 10px !important;
       color: var(--text-secondary) !important;
-      cursor: pointer !important;
-      margin-bottom: 4px !important;
       transition: all 0.2s ease !important;
-      display: block !important;
-      text-decoration: none !important;
+      font-weight: 500 !important;
+      margin-bottom: 4px !important;
     }
 
     [class*="SidebarNavLink"]:hover {
@@ -373,163 +164,197 @@ font-weight: 600 !important;
 
     [class*="SidebarNavLink"][class*="active"] {
       background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
-      font-weight: 600 !important;
+      color: var(--primary) !important;
+      font-weight: 700 !important;
     }
 
-    /* ── 5. Main Content & Top Bar ──────────────────── */
+    /* Top Bar / VoidBar */
     [class*="TopBarContainer"] {
-      background: var(--bg-surface) !important;
+      background: rgba(11, 18, 32, 0.8) !important;
+      backdrop-filter: blur(16px) !important;
       border-bottom: 1px solid var(--border) !important;
-      padding: 0 32px !important;
+      height: 64px !important;
+      padding: 0 24px !important;
+      display: flex !important;
+      align-items: center !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
     }
 
-    /* ── 6. Collections & Cards ──────────────────────── */
-    [class*="CollectionCard"],
-    [class*="Card"] {
-      background: var(--bg-card) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 12px !important;
-      padding: 20px !important;
-      margin-bottom: 16px !important;
-      color: var(--text-primary) !important;
-    }
-
-    /* ── 7. Posts Page / Table style ────────────────── */
-    [class*="Table"] {
-      width: 100% !important;
-      border-collapse: collapse !important;
-    }
-
-    [class*="Table"] th {
-      text-align: left !important;
-      color: var(--text-muted) !important;
-      padding: 12px !important;
-      font-size: 12px !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.05em !important;
-    }
-
-    [class*="Table"] td {
-      padding: 16px 12px !important;
-      border-top: 1px solid var(--border) !important;
-      color: var(--text-secondary) !important;
-    }
-
-    [class*="TableRow"]:hover {
-      background: rgba(255,255,255,0.03) !important;
-    }
-
-    /* ── 8. New Post Editor (Split Layout) ────────────── */
+    /* ── 4. 3-Column Editor Layout ──────────────────── */
+    
     [class*="EditorContainer"] {
       display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 0 !important;
+      grid-template-columns: 320px 1fr 500px !important;
       height: calc(100vh - 64px) !important;
+      gap: 0 !important;
+      background: var(--bg-main) !important;
     }
 
+    /* LEFT: Metadata Panel (ControlPane Fields) */
     [class*="ControlPane"] {
+      grid-column: 1 / 3 !important;
+      display: grid !important;
+      grid-template-columns: 320px 1fr !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
+
+    /* Side metadata column */
+    [class*="ControlPane"] > div:not(:has([class*="Markdown"])) {
+      grid-column: 1 !important;
+      background: var(--bg-surface) !important;
+      padding: 32px 24px !important;
+      border-right: 1px solid var(--border) !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+    }
+
+    /* Center markdown column */
+    [class*="ControlPane"] > div:has([class*="Markdown"]) {
+      grid-column: 2 !important;
+      background: var(--bg-body) !important;
+      padding: 40px !important;
+      height: 100% !important;
+      overflow-y: auto !important;
+    }
+
+    /* RIGHT: Preview Panel */
+    [class*="PreviewPane"] {
+      grid-column: 3 !important;
       background: var(--bg-main) !important;
       padding: 40px !important;
-      overflow-y: auto !important;
-      border-right: 1px solid var(--border) !important;
-    }
-
-    [class*="PreviewPane"] {
-      background: var(--bg-surface) !important;
-      padding: 40px !important;
+      border-left: 1px solid var(--border) !important;
       overflow-y: auto !important;
     }
 
-    /* Input Fields */
-    input[type="text"],
-    textarea,
-    [class*="Input"],
-    [contenteditable] {
-      width: 100% !important;
-      background: var(--bg-card) !important;
-      color: var(--text-primary) !important;
+    /* ── 5. Field & Input Styling ───────────────────── */
+    
+    [class*="ControlLabel"], label {
+      font-family: var(--font-body) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: var(--text-muted) !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      margin-bottom: 8px !important;
+      display: block !important;
+    }
+
+    input[type="text"], 
+    textarea, 
+    [class*="Input"] {
+      background: var(--bg-input) !important;
       border: 1px solid var(--border) !important;
-      padding: 14px !important;
-      border-radius: 8px !important;
-      font-family: var(--font) !important;
+      border-radius: 12px !important;
+      color: var(--text-primary) !important;
+      padding: 14px 16px !important;
       font-size: 14px !important;
-      margin-top: 8px !important;
-      outline: none !important;
+      transition: all 0.2s ease !important;
+      width: 100% !important;
     }
 
     input:focus, textarea:focus {
-      border-color: var(--accent) !important;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 2px rgba(182, 196, 255, 0.1) !important;
+      outline: none !important;
     }
 
-    /* Labels */
-    label, [class*="Label"] {
-      display: block !important;
-      color: var(--text-secondary) !important;
-      font-size: 12px !important;
-      font-weight: 600 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.05em !important;
-      margin-top: 24px !important;
-    }
-
-    /* ── 9. Buttons ─────────────────────────────────── */
-    [class*="Button"] {
-      background: var(--accent) !important;
-      color: white !important;
-      border: none !important;
-      padding: 10px 20px !important;
-      border-radius: 8px !important;
-      cursor: pointer !important;
-      font-weight: 600 !important;
-      transition: background 0.2s !important;
-    }
-
-    [class*="Button"]:hover {
-      background: var(--accent-hover) !important;
-    }
-
-    /* Search bar & Extras */
-    [class*="SearchInput"] {
-      background: var(--bg-card) !important;
+    /* Markdown Area Specifics */
+    [class*="Markdown"] [class*="EditorControlBar"] {
+      background: var(--bg-input) !important;
       border: 1px solid var(--border) !important;
+      border-radius: 10px 10px 0 0 !important;
+      padding: 8px !important;
+    }
+
+    [class*="Markdown"] [contenteditable] {
+      font-family: var(--font-code) !important;
+      font-size: 15px !important;
+      line-height: 1.8 !important;
       color: var(--text-primary) !important;
-      border-radius: 8px !important;
-      padding: 8px 12px !important;
+      background: var(--bg-body) !important;
+      padding: 32px !important;
+      border: 1px solid var(--border) !important;
+      border-top: none !important;
+      border-radius: 0 0 12px 12px !important;
     }
 
-    /* Tags / pills in list */
-    [class*="Tag"],
-    [class*="Badge"] {
-      background: rgba(59,130,246,0.1) !important;
-      color: #93C5FD !important;
-      border: 1px solid rgba(59,130,246,0.2) !important;
-      border-radius: 9999px !important;
-      font-size: 0.75rem !important;
+    /* ── 6. Preview Aesthetics ─────────────────────── */
+    
+    [class*="PreviewPane"] article {
+      max-width: 100% !important;
+      font-family: var(--font-body) !important;
+      color: var(--text-primary) !important;
     }
 
-    /* Scrollbar (Chrome/Edge) */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    [class*="PreviewPane"] h1 {
+      font-family: var(--font-display) !important;
+      font-size: 2.5rem !important;
+      font-weight: 700 !important;
+      margin-bottom: 1.5rem !important;
+      color: #fff !important;
+      line-height: 1.1 !important;
+    }
+
+    [class*="PreviewPane"] p {
+      color: var(--text-secondary) !important;
+      line-height: 1.7 !important;
+      margin-bottom: 1.25rem !important;
+    }
+
+    [class*="PreviewPane"] img {
+      width: 100% !important;
+      border-radius: 20px !important;
+      margin: 2rem 0 !important;
+      filter: grayscale(0.2) !important;
+    }
+
+    /* ── 7. Buttons & Utilities ────────────────────── */
+    
+    [class*="Button"],
+    [class*="PublishButton"] {
+      background: var(--primary) !important;
+      color: #05297A !important;
+      font-family: var(--font-display) !important;
+      font-weight: 700 !important;
+      padding: 10px 24px !important;
+      border-radius: 10px !important;
+      text-transform: none !important;
+      letter-spacing: 0 !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    [class*="PublishButton"]:hover {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 20px rgba(182, 196, 255, 0.2) !important;
+      filter: brightness(1.1) !important;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* Fix Decap "Card" background bloat */
+    [class*="ControlPane"] > div { background-color: transparent !important; }
+    [class*="FieldContainer"] { border: none !important; margin-bottom: 24px !important; }
   </style>
 </head>
 <body>
 
-  <!-- Branded loading splash -->
-  <div id="cms-loading" role="status" aria-live="polite" aria-label="Loading CMS">
+  <!-- Premium VoidWriter Splash -->
+  <div id="cms-loading" role="status" aria-label="Loading VoidWriter Pro">
     <div class="splash-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
       </svg>
     </div>
-    <div style="text-align:center;display:flex;flex-direction:column;gap:4px;">
-      <span class="splash-title">Data Science Diaries</span>
-      <span class="splash-sub">Content Manager</span>
+    <div class="splash-text">
+      <span class="splash-title">VoidWriter Pro</span>
+      <span class="splash-sub">Antigravity Design System</span>
     </div>
-    <div class="splash-spinner" aria-hidden="true"></div>
+    <div class="splash-spinner"></div>
   </div>
 
   <!-- Decap CMS Root -->
@@ -539,16 +364,15 @@ font-weight: 600 !important;
   <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
 
   <script>
-    // Hide the splash screen as soon as Decap CMS starts to render
+    // Hide splash when CMS renders
     const hideSplash = () => {
       const splash = document.getElementById('cms-loading');
       if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.display = 'none', 500);
+        splash.classList.add('hidden');
+        setTimeout(() => splash.style.display = 'none', 800);
       }
     };
 
-    // Watch for the CMS root element to be populated
     const observer = new MutationObserver((mutations, obs) => {
       const root = document.getElementById('nc-root');
       if (root && root.children.length > 0) {
@@ -557,13 +381,8 @@ font-weight: 600 !important;
       }
     });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    // Fallback
-    window.addEventListener('load', () => setTimeout(hideSplash, 3000));
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('load', () => setTimeout(hideSplash, 4000));
   </script>
 </body>
 </html>
