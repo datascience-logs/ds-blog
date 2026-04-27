@@ -5,7 +5,7 @@ backend:
 # LOCAL DEVELOPMENT: 
 # Set true for local dev (writes to disk via npm run cms)
 # Set false for production (Netlify Identity)
-local_backend: true
+local_backend: false
 
 media_folder: "src/assets/images"
 public_folder: "/assets/images"
