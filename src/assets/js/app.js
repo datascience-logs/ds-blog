@@ -55,13 +55,53 @@
     });
   }
 
+  /* ── Back to Top ─────────────────────────────────────── */
+  var backToTop = document.getElementById('back-to-top');
+  
+  function toggleBackToTop() {
+    if (!backToTop) return;
+    if (window.scrollY > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  }
+
+  /* ── Share Button ─────────────────────────────────────── */
+  function initShareButtons() {
+    var shareBtn = document.getElementById('share-post');
+    if (!shareBtn) return;
+
+    shareBtn.addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          url: window.location.href
+        }).catch(console.error);
+      } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(window.location.href).then(function() {
+          var originalText = shareBtn.innerHTML;
+          shareBtn.innerHTML = 'Link Copied!';
+          setTimeout(function() {
+            shareBtn.innerHTML = originalText;
+          }, 2000);
+        });
+      }
+    });
+  }
+
   /* ── Event listeners ──────────────────────────────────── */
-  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('scroll', function() {
+    updateProgress();
+    toggleBackToTop();
+  }, { passive: true });
 
   /* ── Init ─────────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', function () {
     updateProgress();
     setActiveNav();
     initFadeIn();
+    initShareButtons();
   });
 })();

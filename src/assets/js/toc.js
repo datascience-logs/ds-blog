@@ -83,7 +83,7 @@
             });
             var activeLink = tocNav.querySelector('a[href="#' + entry.target.id + '"]');
             if (activeLink) {
-              activeLink.style.color = 'var(--orange)';
+              activeLink.style.color = 'var(--clr-accent)';
               activeLink.style.fontWeight = '600';
             }
           }

@@ -5,20 +5,25 @@
 
 :root {
   /* ── Brand Palette ───────────────────────────────────────── */
-  --clr-bg:          #0A0F1C;   /* page background              */
-  --clr-surface:     #111827;   /* section / sidebar bg         */
-  --clr-card:        #1A2235;   /* card / panel bg              */
-  --clr-card-hover:  #1F2B40;   /* card hover state             */
-  --clr-border:      rgba(255, 255, 255, 0.07);
-  --clr-border-mid:  rgba(255, 255, 255, 0.12);
+  --clr-bg:          #070B14;   /* deeper background            */
+  --clr-surface:     #0F172A;   /* section / sidebar bg         */
+  --clr-card:        #1E293B;   /* card / panel bg              */
+  --clr-card-hover:  #334155;   /* card hover state             */
+  --clr-border:      rgba(255, 255, 255, 0.06);
+  --clr-border-mid:  rgba(255, 255, 255, 0.1);
 
-  --clr-accent:      #3B82F6;   /* primary blue                 */
-  --clr-accent-dim:  rgba(59, 130, 246, 0.15);
-  --clr-accent-glow: rgba(59, 130, 246, 0.25);
-  --clr-highlight:   #22C55E;   /* green success                */
-  --clr-warn:        #F59E0B;   /* amber warning                */
-  --clr-danger:      #EF4444;   /* red danger                   */
-  --clr-purple:      #8B5CF6;   /* tag accent                   */
+  --clr-accent:      #38BDF8;   /* vibrant sky blue             */
+  --clr-accent-2:    #818CF8;   /* indigo for gradients         */
+  --clr-accent-dim:  rgba(56, 189, 248, 0.1);
+  --clr-accent-glow: rgba(56, 189, 248, 0.2);
+  --clr-highlight:   #10B981;   /* emerald                      */
+  --clr-warn:        #F59E0B;   /* amber                        */
+  --clr-danger:      #F43F5E;   /* rose                         */
+  --clr-purple:      #A855F7;   /* purple                       */
+
+  --gradient-primary: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+  --glass-bg:         rgba(15, 23, 42, 0.8);
+  --glass-border:     rgba(255, 255, 255, 0.08);
 
   /* ── Text ────────────────────────────────────────────────── */
   --clr-text-primary:   #E5E7EB;
@@ -72,6 +77,7 @@
   --radius-md:   8px;
   --radius-lg:   12px;
   --radius-xl:   16px;
+  --radius-2xl:  24px;
   --radius-full: 9999px;
 
   /* ── Shadows ─────────────────────────────────────────────── */
