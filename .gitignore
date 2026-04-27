@@ -6,3 +6,4 @@ _site/
 .env.local
 Thumbs.db
 .agent
+free-claude-code
