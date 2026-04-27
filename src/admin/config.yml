@@ -1,9 +1,6 @@
 backend:
-  name: github
-  repo: datascience-logs/ds-blog # Replace with your repo (e.g. user/repo)
+  name: git-gateway
   branch: main # Branch to update
-  base_url: https://blog-datascience-logs.netlify.app # Replace with your production domain
-  auth_endpoint: api/auth # This depends on your OAuth gatekeeper service
 
 local_backend: true # Enables local development via npx decap-cms-proxy-server
 
