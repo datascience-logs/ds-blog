@@ -127,267 +127,178 @@
       font-weight: 500 !important;
       border-radius: 6px !important;
       transition: all 0.15s ease !important;
+      --bg-main: #0B1220;
+      --bg-surface: #111827;
+      --bg-card: #1F2937;
+
+      --text-primary: #E5E7EB;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+
+      --accent: #3B82F6;
+      --accent-hover: #2563EB;
+
+      --success: #22C55E;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+
+      --border: rgba(255,255,255,0.06);
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
-    [class*="Nav__"] a:hover,
-    [class*="NavLink"]:hover,
-    [class*="NavLink--isActive"],
-    [class*="NavLink"][class*="active"] {
-      color: #E5E7EB !important;
-      background: rgba(59,130,246,0.12) !important;
-    }
+    /* ── 2. Base Reset & Visibility ───────────────────── */
+    * { box-sizing: border-box; }
 
-    /* Main content area */
-    [class*="Page__"],
-    [class*="Collection__"],
-    main[class*="Main"] {
-      background: var(--bg) !important;
-    }
-
-    /* Cards / list items */
-    [class*="ListCard"],
-    [class*="EntryListing"],
-    [class*="Card__"] {
-      background: var(--card) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 10px !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
-      transition: border-color 0.2s ease, transform 0.2s ease !important;
-    }
-
-    [class*="ListCard"]:hover,
-    [class*="EntryListing"]:hover {
-      border-color: rgba(59,130,246,0.35) !important;
-      transform: translateY(-1px) !important;
-    }
-
-    /* Entry titles / text in list */
-    [class*="ListCard"] h2,
-    [class*="ListCard"] p,
-    [class*="EntryListing"] h2 {
-      color: var(--text) !important;
-    }
-
-    /* Editor & Pane Layouts (Force Dark) */
-    #nc-root,
-    [class*="AppContainer"],
-    [class*="EditorContainer"],
-    [class*="ControlPane"],
-    [class*="PaneContainer"],
-    [class*="EditorPanel"] {
-      background-color: var(--bg) !important;
-      color: var(--text) !important;
-    }
-
-    [class*="EditorPanel"] {
-      border-left: 1px solid var(--border) !important;
-    }
-
-    /* Widget / field labels */
-    [class*="Label"],
-    [class*="FieldLabel"],
-    label[class*="Label"] {
-      background: transparent !important;
-      color: var(--text-m) !important;
-      font-size: 0.75rem !important;
-      font-weight: 700 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.08em !important;
-      margin-bottom: 8px !important;
-      border: none !important;
-      box-shadow: none !important;
-      display: block !important;
-    }
-
-    /* Text inputs */
-    input[type="text"],
-    input[type="search"],
-    input[type="email"],
-    textarea,
-    [class*="TextInput"],
-    [class*="Input__"] input,
-    [class*="InputText"] {
-      background: var(--surface) !important;
-      color: var(--text) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 8px !important;
+    body {
+      background: var(--bg-main) !important;
+      color: var(--text-primary) !important;
       font-family: var(--font) !important;
-      font-size: 0.9375rem !important;
-      padding: 0.625rem 0.875rem !important;
-      width: 100% !important;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
-    }
-
-    input[type="text"]:focus,
-    input[type="search"]:focus,
-    textarea:focus,
-    [class*="TextInput"]:focus-within,
-    [class*="InputText"]:focus-within {
-      border-color: var(--accent) !important;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.15), inset 0 2px 4px rgba(0,0,0,0.1) !important;
-      background: var(--card) !important;
-      outline: none !important;
-    }
-
-    /* Widget / field containers */
-    [class*="ControlPaneContainer"] {
-      padding: 3rem 2rem !important;
-      max-width: 900px !important;
-      margin: 0 auto !important;
-      background: transparent !important;
-    }
-
-    [class*="FieldContainer"],
-    [class*="ControlContainer"] {
-      background: transparent !important;
-      margin-bottom: 2.5rem !important;
-      padding-bottom: 2.5rem !important;
-      border-bottom: 1px solid var(--border) !important;
-    }
-
-    [class*="FieldContainer"]:last-child,
-    [class*="ControlContainer"]:last-child {
-      border-bottom: none !important;
-    }
-
-    /* Select dropdowns */
-    select,
-    [class*="Select__"] {
-      background: var(--card) !important;
-      color: var(--text) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 8px !important;
-      font-family: var(--font) !important;
-    }
-
-    /* Buttons — primary */
-    button[class*="success"],
-    button[class*="primary"],
-    [class*="Button"][class*="primary"],
-    [class*="Dropdown__"] button[class*="success"] {
-      background: var(--accent) !important;
-      color: #fff !important;
-      border: none !important;
-      border-radius: 8px !important;
-      font-weight: 600 !important;
-      font-size: 0.875rem !important;
-      font-family: var(--font) !important;
-      padding: 0.5rem 1.25rem !important;
-      cursor: pointer !important;
-      transition: background 0.15s ease, box-shadow 0.15s ease !important;
-    }
-
-    button[class*="success"]:hover,
-    button[class*="primary"]:hover {
-      background: #2563EB !important;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.25) !important;
-    }
-
-    /* Buttons — secondary / ghost */
-    button[class*="Button"],
-    [class*="Button__"] {
-      border-radius: 8px !important;
-      font-family: var(--font) !important;
-      font-weight: 500 !important;
-      transition: all 0.15s ease !important;
-    }
-
-    /* Markdown editor toolbar */
-    [class*="Toolbar"],
-    [class*="toolbar"],
-    [class*="EditorToolbar"] {
-      background: var(--surface) !important;
-      border-bottom: 1px solid var(--border) !important;
-      padding: 0.5rem !important;
-      display: flex !important;
-      gap: 4px !important;
-      flex-wrap: wrap !important;
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 10 !important;
-      border-radius: 8px 8px 0 0 !important;
-    }
-
-    [class*="Toolbar"] button,
-    [class*="toolbar"] button {
-      color: #9CA3AF !important;
-      border-radius: 6px !important;
-      background: transparent !important;
-      border: 1px solid transparent !important;
-      width: 32px !important;
-      height: 32px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      transition: all 0.1s ease !important;
-    }
-
-    [class*="Toolbar"] button:hover,
-    [class*="toolbar"] button:hover {
-      color: var(--text) !important;
-      background: rgba(255,255,255,0.06) !important;
-      border-color: var(--border) !important;
-    }
-
-    [class*="Toolbar"] [class*="isActive"],
-    [class*="toolbar"] [class*="active"] {
-      color: var(--accent) !important;
-      background: var(--accent-d) !important;
-      border-color: rgba(59,130,246,0.3) !important;
-    }
-
-    /* Markdown editor content area */
-    [class*="Editor"] [contenteditable],
-    [class*="slate-editor"],
-    .notranslate[contenteditable],
-    [class*="EditorControlBar"] + div {
-      background: var(--bg) !important;
-      color: var(--text) !important;
-      font-family: var(--font) !important;
-      line-height: 1.8 !important;
-      caret-color: var(--accent) !important;
-      padding: 1.5rem !important;
-      border: 1px solid var(--border) !important;
-      border-top: none !important;
-      border-radius: 0 0 8px 8px !important;
-      min-height: 400px !important;
-    }
-
-    /* Rich text / codemirror */
-    .CodeMirror,
-    .cm-editor {
-      background: #0D1117 !important;
-      color: #E6EDF3 !important;
-      font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace !important;
       font-size: 14px !important;
-      border-radius: 8px !important;
-      padding: 1rem !important;
-      border: 1px solid var(--border) !important;
+      line-height: 1.6 !important;
+      margin: 0;
     }
 
-    .CodeMirror-gutters {
-      background: #0D1117 !important;
+    p, span, label { color: var(--text-secondary) !important; }
+    h1, h2, h3, strong { color: var(--text-primary) !important; }
+
+    /* ── 3. Layout Structure ─────────────────────────── */
+    #nc-root [class*="AppContainer"] {
+      display: grid !important;
+      grid-template-columns: 240px 1fr !important;
+      height: 100vh !important;
+      background: var(--bg-main) !important;
+    }
+
+    /* ── 4. Sidebar Design ───────────────────────────── */
+    [class*="SidebarContainer"] {
+      background: var(--bg-surface) !important;
+      border-right: 1px solid var(--border) !important;
+      padding: 24px 16px !important;
+      height: 100vh !important;
+    }
+
+    [class*="SidebarNavLink"] {
+      padding: 10px 14px !important;
+      border-radius: 8px !important;
+      color: var(--text-secondary) !important;
+      cursor: pointer !important;
+      margin-bottom: 4px !important;
+      transition: all 0.2s ease !important;
+      display: block !important;
+      text-decoration: none !important;
+    }
+
+    [class*="SidebarNavLink"]:hover {
+      background: rgba(255,255,255,0.04) !important;
+      color: var(--text-primary) !important;
+    }
+
+    [class*="SidebarNavLink"][class*="active"] {
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      font-weight: 600 !important;
+    }
+
+    /* ── 5. Main Content & Top Bar ──────────────────── */
+    [class*="TopBarContainer"] {
+      background: var(--bg-surface) !important;
+      border-bottom: 1px solid var(--border) !important;
+      padding: 0 32px !important;
+    }
+
+    /* ── 6. Collections & Cards ──────────────────────── */
+    [class*="CollectionCard"],
+    [class*="Card"] {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 12px !important;
+      padding: 20px !important;
+      margin-bottom: 16px !important;
+      color: var(--text-primary) !important;
+    }
+
+    /* ── 7. Posts Page / Table style ────────────────── */
+    [class*="Table"] {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+
+    [class*="Table"] th {
+      text-align: left !important;
+      color: var(--text-muted) !important;
+      padding: 12px !important;
+      font-size: 12px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+
+    [class*="Table"] td {
+      padding: 16px 12px !important;
+      border-top: 1px solid var(--border) !important;
+      color: var(--text-secondary) !important;
+    }
+
+    [class*="TableRow"]:hover {
+      background: rgba(255,255,255,0.03) !important;
+    }
+
+    /* ── 8. New Post Editor (Split Layout) ────────────── */
+    [class*="EditorContainer"] {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 0 !important;
+      height: calc(100vh - 64px) !important;
+    }
+
+    [class*="ControlPane"] {
+      background: var(--bg-main) !important;
+      padding: 40px !important;
+      overflow-y: auto !important;
       border-right: 1px solid var(--border) !important;
     }
 
-    .CodeMirror-cursor {
-      border-left-color: var(--accent) !important;
+    [class*="PreviewPane"] {
+      background: var(--bg-surface) !important;
+      padding: 40px !important;
+      overflow-y: auto !important;
     }
 
-    /* Preview Pane */
-    [class*="PreviewPaneFrame"] {
-      background: var(--bg) !important;
-      border-left: 1px solid var(--border) !important;
+    /* Input Fields */
+    input[type="text"],
+    textarea,
+    [class*="Input"],
+    [contenteditable] {
+      width: 100% !important;
+      background: var(--bg-card) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border) !important;
+      padding: 14px !important;
+      border-radius: 8px !important;
+      font-family: var(--font) !important;
+      font-size: 14px !important;
+      margin-top: 8px !important;
+      outline: none !important;
     }
 
-    /* Editor Title Bar */
-    [class*="EditorHeader"] {
-      background: var(--surface) !important;
-      border-bottom: 1px solid var(--border) !important;
-      padding: 0.75rem 2rem !important;
+    input:focus, textarea:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
     }
 
+    /* Labels */
+    label, [class*="Label"] {
+      display: block !important;
+      color: var(--text-secondary) !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      margin-top: 24px !important;
+    }
+
+    /* ── 9. Buttons ─────────────────────────────────── */
+    [class*="Button"] {
+      background: var(--accent) !important;
     /* Search bar in collection list */
     [class*="SearchInput"],
     [class*="search-input"] {
