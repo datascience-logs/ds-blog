@@ -56,6 +56,21 @@ eleventyConfig.addFilter("dateToRfc3339", function (date) {
   return isNaN(d.getTime()) ? new Date().toISOString().split("T")[0] : d.toISOString().split("T")[0];
 });
 
+eleventyConfig.addFilter("date", function (date, format) {
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "";
+  
+  // Basic implementation of common formats
+  if (format === "%B %d, %Y") {
+    return d.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+  return d.toLocaleDateString();
+});
+
   eleventyConfig.addFilter("excerpt", function (str, length = 200) {
     if (!str) return "";
     const plainText = str.replace(/<[^>]*>/g, "");
