@@ -127,23 +127,6 @@
       font-weight: 500 !important;
       border-radius: 6px !important;
       transition: all 0.15s ease !important;
-      --bg-main: #0B1220;
-      --bg-surface: #111827;
-      --bg-card: #1F2937;
-
-      --text-primary: #E5E7EB;
-      --text-secondary: #9CA3AF;
-      --text-muted: #6B7280;
-
-      --accent: #3B82F6;
-      --accent-hover: #2563EB;
-
-      --success: #22C55E;
-      --warning: #F59E0B;
-      --danger: #EF4444;
-
-      --border: rgba(255,255,255,0.06);
-      --font: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     /* ── 2. Base Reset & Visibility ───────────────────── */
@@ -299,13 +282,26 @@
     /* ── 9. Buttons ─────────────────────────────────── */
     [class*="Button"] {
       background: var(--accent) !important;
-    /* Search bar in collection list */
-    [class*="SearchInput"],
-    [class*="search-input"] {
-      background: var(--card) !important;
-      border-color: var(--border) !important;
-      color: var(--text) !important;
+      color: white !important;
+      border: none !important;
+      padding: 10px 20px !important;
       border-radius: 8px !important;
+      cursor: pointer !important;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+
+    [class*="Button"]:hover {
+      background: var(--accent-hover) !important;
+    }
+
+    /* Search bar & Extras */
+    [class*="SearchInput"] {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-primary) !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
     }
 
     /* Tags / pills in list */
