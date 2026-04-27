@@ -168,22 +168,35 @@
       color: var(--text) !important;
     }
 
-    /* Editor panel */
-    [class*="EditorPanel"],
-    [class*="Editor__"] {
-      background: var(--surface) !important;
+    /* Editor & Pane Layouts (Force Dark) */
+    #nc-root,
+    [class*="AppContainer"],
+    [class*="EditorContainer"],
+    [class*="ControlPane"],
+    [class*="PaneContainer"],
+    [class*="EditorPanel"] {
+      background-color: var(--bg) !important;
+      color: var(--text) !important;
+    }
+
+    [class*="EditorPanel"] {
       border-left: 1px solid var(--border) !important;
     }
 
     /* Widget / field labels */
+    [class*="Label"],
     [class*="FieldLabel"],
     label[class*="Label"] {
-      color: #9CA3AF !important;
+      background: transparent !important;
+      color: var(--text-m) !important;
       font-size: 0.75rem !important;
-      font-weight: 600 !important;
+      font-weight: 700 !important;
       text-transform: uppercase !important;
-      letter-spacing: 0.06em !important;
-      margin-bottom: 6px !important;
+      letter-spacing: 0.08em !important;
+      margin-bottom: 8px !important;
+      border: none !important;
+      box-shadow: none !important;
+      display: block !important;
     }
 
     /* Text inputs */
@@ -219,18 +232,22 @@
 
     /* Widget / field containers */
     [class*="ControlPaneContainer"] {
-      padding: 2rem !important;
+      padding: 3rem 2rem !important;
       max-width: 900px !important;
       margin: 0 auto !important;
+      background: transparent !important;
     }
 
-    [class*="FieldContainer"] {
-      margin-bottom: 2rem !important;
-      padding-bottom: 2rem !important;
+    [class*="FieldContainer"],
+    [class*="ControlContainer"] {
+      background: transparent !important;
+      margin-bottom: 2.5rem !important;
+      padding-bottom: 2.5rem !important;
       border-bottom: 1px solid var(--border) !important;
     }
 
-    [class*="FieldContainer"]:last-child {
+    [class*="FieldContainer"]:last-child,
+    [class*="ControlContainer"]:last-child {
       border-bottom: none !important;
     }
 
