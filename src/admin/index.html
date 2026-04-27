@@ -194,14 +194,16 @@
     [class*="TextInput"],
     [class*="Input__"] input,
     [class*="InputText"] {
-      background: var(--card) !important;
+      background: var(--surface) !important;
       color: var(--text) !important;
       border: 1px solid var(--border) !important;
       border-radius: 8px !important;
       font-family: var(--font) !important;
       font-size: 0.9375rem !important;
-      padding: 0.5rem 0.75rem !important;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+      padding: 0.625rem 0.875rem !important;
+      width: 100% !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
     }
 
     input[type="text"]:focus,
@@ -210,8 +212,26 @@
     [class*="TextInput"]:focus-within,
     [class*="InputText"]:focus-within {
       border-color: var(--accent) !important;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.2) !important;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15), inset 0 2px 4px rgba(0,0,0,0.1) !important;
+      background: var(--card) !important;
       outline: none !important;
+    }
+
+    /* Widget / field containers */
+    [class*="ControlPaneContainer"] {
+      padding: 2rem !important;
+      max-width: 900px !important;
+      margin: 0 auto !important;
+    }
+
+    [class*="FieldContainer"] {
+      margin-bottom: 2rem !important;
+      padding-bottom: 2rem !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+
+    [class*="FieldContainer"]:last-child {
+      border-bottom: none !important;
     }
 
     /* Select dropdowns */
@@ -258,32 +278,63 @@
 
     /* Markdown editor toolbar */
     [class*="Toolbar"],
-    [class*="toolbar"] {
+    [class*="toolbar"],
+    [class*="EditorToolbar"] {
       background: var(--surface) !important;
       border-bottom: 1px solid var(--border) !important;
+      padding: 0.5rem !important;
+      display: flex !important;
+      gap: 4px !important;
+      flex-wrap: wrap !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 10 !important;
+      border-radius: 8px 8px 0 0 !important;
     }
 
     [class*="Toolbar"] button,
     [class*="toolbar"] button {
       color: #9CA3AF !important;
-      border-radius: 4px !important;
+      border-radius: 6px !important;
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      width: 32px !important;
+      height: 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.1s ease !important;
     }
 
     [class*="Toolbar"] button:hover,
     [class*="toolbar"] button:hover {
       color: var(--text) !important;
       background: rgba(255,255,255,0.06) !important;
+      border-color: var(--border) !important;
+    }
+
+    [class*="Toolbar"] [class*="isActive"],
+    [class*="toolbar"] [class*="active"] {
+      color: var(--accent) !important;
+      background: var(--accent-d) !important;
+      border-color: rgba(59,130,246,0.3) !important;
     }
 
     /* Markdown editor content area */
     [class*="Editor"] [contenteditable],
     [class*="slate-editor"],
-    .notranslate[contenteditable] {
-      background: var(--card) !important;
+    .notranslate[contenteditable],
+    [class*="EditorControlBar"] + div {
+      background: var(--bg) !important;
       color: var(--text) !important;
       font-family: var(--font) !important;
-      line-height: 1.7 !important;
+      line-height: 1.8 !important;
       caret-color: var(--accent) !important;
+      padding: 1.5rem !important;
+      border: 1px solid var(--border) !important;
+      border-top: none !important;
+      border-radius: 0 0 8px 8px !important;
+      min-height: 400px !important;
     }
 
     /* Rich text / codemirror */
@@ -294,10 +345,30 @@
       font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace !important;
       font-size: 14px !important;
       border-radius: 8px !important;
+      padding: 1rem !important;
+      border: 1px solid var(--border) !important;
+    }
+
+    .CodeMirror-gutters {
+      background: #0D1117 !important;
+      border-right: 1px solid var(--border) !important;
     }
 
     .CodeMirror-cursor {
       border-left-color: var(--accent) !important;
+    }
+
+    /* Preview Pane */
+    [class*="PreviewPaneFrame"] {
+      background: var(--bg) !important;
+      border-left: 1px solid var(--border) !important;
+    }
+
+    /* Editor Title Bar */
+    [class*="EditorHeader"] {
+      background: var(--surface) !important;
+      border-bottom: 1px solid var(--border) !important;
+      padding: 0.75rem 2rem !important;
     }
 
     /* Search bar in collection list */
