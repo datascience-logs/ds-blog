@@ -1,11 +1,13 @@
 backend:
-  name: git-gateway
-  branch: main
+  name: github
+  repo: YOUR_GITHUB_USERNAME/ds-blog # Replace with your repo (e.g. user/repo)
+  branch: main # Branch to update
+  base_url: https://YOUR_DOMAIN.com # Replace with your production domain
+  auth_endpoint: api/auth # This depends on your OAuth gatekeeper service
 
-# LOCAL DEVELOPMENT: 
-# Set true for local dev (writes to disk via npm run cms)
-# Set false for production (Netlify Identity)
-local_backend: false
+local_backend: true # Enables local development via npx decap-cms-proxy-server
+
+publish_mode: editorial_workflow
 
 media_folder: "src/assets/images"
 public_folder: "/assets/images"
@@ -18,79 +20,16 @@ collections:
     extension: "md"
     format: "frontmatter"
     create: true
-    slug: "{{slugify title}}"
-    summary: "{{title}} — {{date}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} ({{status}})"
     fields:
-      - label: "Title"
-        name: "title"
-        widget: "string"
-        hint: "Clear, keyword-rich title for the post"
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", hint: "URL-friendly name" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Status", name: "status", widget: "select", options: ["draft", "published"], default: "draft" }
+      - { label: "Tags", name: "tags", widget: "list", hint: "Comma separated list" }
+      - { label: "Body", name: "body", widget: "markdown" }
 
-      - label: "Description"
-        name: "description"
-        widget: "text"
-        hint: "One-sentence summary for SEO and social previews"
-
-      - label: "Publish Date"
-        name: "date"
-        widget: "datetime"
-        date_format: "YYYY-MM-DD"
-        time_format: false
-        format: "YYYY-MM-DD"
-
-      - label: "Status"
-        name: "status"
-        widget: "select"
-        options:
-          - { label: "Draft", value: "draft" }
-          - { label: "Published", value: "published" }
-        default: "draft"
-
-      - label: "Tags"
-        name: "tags"
-        widget: "list"
-        allow_add: true
-        hint: "e.g. python, machine-learning, beginner"
-
-      - label: "Estimated Reading Time"
-        name: "estimatedTime"
-        widget: "string"
-        required: false
-        hint: "e.g. '5 min read' or '2-3 hours'"
-
-      - label: "Body"
-        name: "body"
-        widget: "markdown"
-        hint: "Write your post content in Markdown"
-        default: |
-          ## Why this exists
-
-          [Problem + who it helps + outcome]
-
-          ## What you'll learn
-
-          - Concrete outcome 1
-          - Concrete outcome 2
-
-          ## Before you start
-
-          [Prerequisites with links]
-
-          ## Setup
-
-          ```bash
-          pip install something
-          ```
-
-          ## Content
-
-          Your content here...
-
-          ## Summary
-
-          [Key takeaways]
-
-          ## Resources
-
-          - [Resource 1](https://example.com)
-          - [Resource 2](https://example.com)
+editor:
+  preview: true

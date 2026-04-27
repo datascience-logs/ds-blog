@@ -1,0 +1,73 @@
+/* e:\ds-blog\src\admin\editor.css */
+
+/* Target the root Decap app */
+#nc-root {
+    background-color: #0A1929 !important;
+}
+
+/* Glassmorphism Sidebar */
+aside[class*="SidebarContainer"] {
+    background: rgba(13, 27, 42, 0.85) !important;
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Main Editor Canvas */
+main[class*="EditorContainer"] {
+    background-color: #0A1929 !important;
+}
+
+/* Glassmorphism Control Panels */
+div[class*="ControlContainer"] {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    margin-bottom: 1rem !important;
+    padding: 1.5rem !important;
+    transition: all 0.3s ease;
+}
+
+div[class*="ControlContainer"]:focus-within {
+    border-color: #FF6B35 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Labels & Typography */
+label[class*="Label"] {
+    color: #FF6B35 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-size: 0.75rem !important;
+}
+
+/* Markdown Textarea */
+textarea[class*="EditorControl"] {
+    background: transparent !important;
+    color: #E6F1FF !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    border: none !important;
+    line-height: 1.7 !important;
+}
+
+/* Top Bar Styling */
+header[class*="TopBarContainer"] {
+    background: #0D1B2A !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Buttons */
+button[class*="Button"] {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: transform 0.2s !important;
+}
+
+button[class*="Button"]:hover {
+    transform: scale(1.02);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0A1929; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }

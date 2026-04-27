@@ -1,25 +1,44 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager | VoidWriter Pro</title>
+    <title>VoidWriter Pro | Content Manager</title>
 
-    <!-- UI Core -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="stylesheet" href="theme.css">
+    <!-- Tailwind CSS for UI Utilities -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0A1929',
+                        surface: '#0D1B2A',
+                        textPrimary: '#E6F1FF',
+                        accent: '#FF6B35',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
-    <!-- Custom Theme Logic -->
-    <script src="admin.js"></script>
+    <!-- Premium Editor UI Styles -->
+    <link rel="stylesheet" href="editor.css">
 </head>
-<body class="bg-background text-on-background font-body-md overflow-hidden selection:bg-primary/30">
+<body class="bg-navy text-textPrimary antialiased">
     
-    <!-- Decap CMS Entry Point -->
-    <script src="https://unpkg.com/decap-cms@^3.1.2/dist/decap-cms.js"></script>
+    <!-- Decap CMS Core -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <!-- Custom Editor Logic & Preview Registration -->
+    <script src="editor.js"></script>
 
     <script>
-        // Register the theme for the preview pane as well
-        CMS.registerPreviewStyle("theme.css");
+        // Initialize CMS with custom configuration
+        window.CMS.init();
     </script>
 </body>
 </html>
