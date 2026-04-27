@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="/assets/css/base.css" />
   <link rel="stylesheet" href="/assets/css/components.css" />
   <link rel="stylesheet" href="/assets/css/layout.css" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   {% block head %}{% endblock %}
 </head>
@@ -80,5 +81,16 @@
   <script src="/assets/js/toc.js" defer></script>
   <script src="/assets/js/app.js" defer></script>
   {% block scripts %}{% endblock %}
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
 </body>
 </html>
