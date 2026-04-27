@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+# LOCAL DEVELOPMENT: 
+# Set true for local dev (writes to disk via npm run cms)
+# Set false for production (Netlify Identity)
 local_backend: true
 
 media_folder: "src/assets/images"
@@ -10,12 +13,13 @@ public_folder: "/assets/images"
 collections:
   - name: "posts"
     label: "Posts"
+    label_singular: "Post"
     folder: "src/posts"
     extension: "md"
     format: "frontmatter"
     create: true
     slug: "{{slugify title}}"
-    preview_path: "posts/{{slugify title}}/index.html"
+    summary: "{{title}} — {{date}}"
     fields:
       - label: "Title"
         name: "title"
@@ -25,13 +29,13 @@ collections:
       - label: "Description"
         name: "description"
         widget: "text"
-        hint: "One-sentence value proposition for SEO and social previews"
+        hint: "One-sentence summary for SEO and social previews"
 
       - label: "Publish Date"
         name: "date"
         widget: "datetime"
         date_format: "YYYY-MM-DD"
-        time_format: "HH:mm"
+        time_format: false
         format: "YYYY-MM-DD"
 
       - label: "Status"
@@ -46,54 +50,47 @@ collections:
         name: "tags"
         widget: "list"
         allow_add: true
-        hint: "Add relevant tags (e.g., python, machine-learning, beginner)"
+        hint: "e.g. python, machine-learning, beginner"
 
-      - label: "Estimated Time"
+      - label: "Estimated Reading Time"
         name: "estimatedTime"
         widget: "string"
-        hint: "e.g., '2-3 hours', '30 minutes'"
+        required: false
+        hint: "e.g. '5 min read' or '2-3 hours'"
 
       - label: "Body"
         name: "body"
         widget: "markdown"
-        hint: "Write your content in Markdown"
-        modes:
-          - raw
-          - markdown
+        hint: "Write your post content in Markdown"
         default: |
-          ## 💡 Why this exists
+          ## Why this exists
 
           [Problem + who it helps + outcome]
 
-          ## ⚡ What you'll learn
+          ## What you'll learn
 
-          - [Concrete outcome 1]
-          - [Concrete outcome 2]
+          - Concrete outcome 1
+          - Concrete outcome 2
 
-          ## 🛠️ Before you start
+          ## Before you start
 
           [Prerequisites with links]
 
-          ## 📦 Setup
+          ## Setup
 
           ```bash
-          # Copy-paste ready commands
-          npm install -g something
+          pip install something
           ```
 
-          ## 📖 Content
+          ## Content
 
           Your content here...
 
-          ## ✅ Summary
+          ## Summary
 
           [Key takeaways]
 
-          ## 🔗 Resources
+          ## Resources
 
           - [Resource 1](https://example.com)
           - [Resource 2](https://example.com)
-    preview:
-      date: "{{date}}"
-      title: "{{title}}"
-      body: "{{body}}"

@@ -3,71 +3,131 @@ layout: base
 title: "Home"
 ---
 
-<section class="home-hero">
-  <h1>{{ site.title }}</h1>
-  <p>{{ site.description }}</p>
-  <a href="/admin/#/" class="btn btn-primary">Start Writing</a>
+<!-- ── Hero ──────────────────────────────────────────────── -->
+<section class="home-hero fade-in">
+  <p class="home-hero-eyebrow">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Updated weekly
+  </p>
+  <h1>
+    Documenting the journey through<br>
+    <span>Data Science</span>
+  </h1>
+  <p class="home-hero-desc">{{ site.description }}</p>
+  <div class="home-hero-cta">
+    <a href="#posts" class="btn btn-primary">Browse Posts</a>
+    <a href="/admin/#/" class="btn btn-ghost">Start Writing</a>
+  </div>
 </section>
 
-<div class="container">
-  <input
-    type="search"
-    class="search-input"
-    id="search-input"
-    placeholder="Search posts..."
-    aria-label="Search posts"
-  />
+<!-- ── Main content area ─────────────────────────────────── -->
+<div class="container" id="posts">
 
+  <!-- Search -->
+  <div class="search-wrapper">
+    <!-- Search icon -->
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <label for="search-input" class="visually-hidden">Search posts</label>
+    <input
+      type="search"
+      class="search-input"
+      id="search-input"
+      placeholder="Search posts by title, tag or keyword…"
+      aria-label="Search posts"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <h2 class="section-title">Latest Posts</h2>
+    <span id="posts-count" class="section-link" aria-live="polite"></span>
+  </div>
+
+  <!-- Posts grid -->
   <div class="posts-grid" id="posts-grid">
-    {% for post in collections.posts %}
-    <article class="post-card">
-      <h2 class="post-card-title">
-        <a href="{{ post.url }}">{{ post.data.title }}</a>
-      </h2>
+    {% for post in collections.posts | reverse %}
+    {% set title = post.data.title %}
+    {% set postDate = post.data.date %}
+    {% set desc = post.data.description %}
+    {% set estTime = post.data.estimatedTime %}
+    {% set tags = post.data.tags %}
+
+    <article class="post-card fade-in">
+      <h3 class="post-card-title">
+        <a href="{{ post.url }}">{{ title }}</a>
+      </h3>
       <div class="post-card-meta">
-        <time datetime="{{ post.data.date | dateToRfc3339 }}">{{ post.data.date | date: "%B %d, %Y" }}</time>
-        {% if post.data.estimatedTime %}
-          <span>{{ post.data.estimatedTime }}</span>
+        <time datetime="{{ postDate | dateToRfc3339 }}">{{ postDate }}</time>
+        {% if estTime %}
+          <span class="post-card-meta-dot" aria-hidden="true"></span>
+          <span>{{ estTime }}</span>
         {% endif %}
       </div>
-      <p class="post-card-excerpt">{{ post.data.description }}</p>
-      {% if post.data.tags and post.data.tags.length %}
-        <ul class="post-card-tags">
-          {% for tag in post.data.tags %}
+      <p class="post-card-excerpt">{{ desc }}</p>
+      {% if tags and tags.length %}
+        <ul class="post-card-tags" role="list" aria-label="Tags">
+          {% for tag in tags %}
             <li><span class="tag">{{ tag }}</span></li>
           {% endfor %}
         </ul>
       {% endif %}
+      <div class="post-card-footer">
+        <ul class="post-card-tags" role="list" style="margin:0;"></ul>
+        <span class="read-more-arrow" aria-hidden="true">
+          Read
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
     </article>
     {% endfor %}
   </div>
 
+  <!-- Empty state -->
   {% if collections.posts.length == 0 %}
-    <p style="text-align: center; color: var(--text-muted);">No posts yet. <a href="/admin/#/collections/posts/new">Create your first post</a>.</p>
+    <div class="empty-state">
+      <p>No posts yet. <a href="/admin/#/collections/posts/new">Create your first post →</a></p>
+    </div>
   {% endif %}
+
 </div>
 
 <script>
-  (function() {
-    var searchInput = document.getElementById('search-input');
-    var postsGrid = document.getElementById('posts-grid');
+(function() {
+  var searchInput = document.getElementById('search-input');
+  var postsGrid   = document.getElementById('posts-grid');
+  var postsCount  = document.getElementById('posts-count');
 
-    if (!searchInput || !postsGrid) return;
+  if (!searchInput || !postsGrid) return;
 
-    var cards = postsGrid.querySelectorAll('.post-card');
+  var cards = Array.from(postsGrid.querySelectorAll('.post-card'));
 
-    searchInput.addEventListener('input', function(e) {
-      var query = e.target.value.toLowerCase();
+  function updateCount(visible) {
+    postsCount.textContent = visible === cards.length
+      ? cards.length + ' posts'
+      : visible + ' of ' + cards.length + ' posts';
+  }
 
-      cards.forEach(function(card) {
-        var title = card.querySelector('.post-card-title').textContent.toLowerCase();
-        var excerpt = card.querySelector('.post-card-excerpt').textContent.toLowerCase();
-        var tags = card.querySelector('.post-card-tags') ? card.querySelector('.post-card-tags').textContent.toLowerCase() : '';
+  updateCount(cards.length);
 
-        var matches = title.includes(query) || excerpt.includes(query) || tags.includes(query);
+  searchInput.addEventListener('input', function(e) {
+    var query = e.target.value.toLowerCase().trim();
+    var visible = 0;
 
-        card.style.display = matches ? '' : 'none';
-      });
+    cards.forEach(function(card) {
+      var title   = (card.querySelector('.post-card-title')   || {}).textContent || '';
+      var excerpt = (card.querySelector('.post-card-excerpt') || {}).textContent || '';
+      var tags    = (card.querySelector('.post-card-tags')    || {}).textContent || '';
+      var matches = !query || [title, excerpt, tags].join(' ').toLowerCase().includes(query);
+
+      card.style.display = matches ? '' : 'none';
+      if (matches) visible++;
     });
-  })();
+
+    updateCount(visible);
+  });
+})();
 </script>

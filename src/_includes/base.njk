@@ -35,12 +35,21 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <!-- Reading progress bar (visible on post pages) -->
+  <div class="reading-progress" id="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Reading progress"></div>
+
   <header class="site-header" role="banner">
     <nav class="nav-container" aria-label="Main navigation">
       <a href="/" class="brand" aria-label="{{ site.title }} home">
-        <span class="brand-icon" aria-hidden="true">📊</span>
+        <!-- SVG logo mark -->
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </span>
         <span class="brand-text">{{ site.title }}</span>
       </a>
+
       <ul class="nav-links" role="list">
         <li><a href="/">Home</a></li>
         <li><a href="/posts/">All Posts</a></li>
@@ -56,17 +65,20 @@
   <footer class="site-footer" role="contentinfo">
     <div class="footer-container">
       <p class="footer-brand">{{ site.title }}</p>
-      <p class="footer-copy">&copy; {% currentYear %} All rights reserved.</p>
+      <p class="footer-copy">&copy; {{ site.currentYear }} All rights reserved. Built with Eleventy.</p>
       <nav class="footer-nav" aria-label="Footer navigation">
         <a href="#main-content">Back to top</a>
         <span aria-hidden="true">•</span>
         <a href="/admin/#/">Admin Panel</a>
+        <span aria-hidden="true">•</span>
+        <a href="/feed.xml">RSS Feed</a>
       </nav>
     </div>
   </footer>
 
   <script src="/assets/js/copy-code.js" defer></script>
   <script src="/assets/js/toc.js" defer></script>
+  <script src="/assets/js/app.js" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

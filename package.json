@@ -4,7 +4,9 @@
   "description": "A production-ready Markdown blog system for Data Science Logs",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
+    "dev": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
+    "cms": "npx decap-server",
     "lint": "echo 'No linter configured'",
     "test": "echo 'No tests configured'"
   },

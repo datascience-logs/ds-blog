@@ -3,12 +3,371 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager | Data Science Logs</title>
+  <title>Admin — Data Science Diaries</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.1.0/dist/decap-cms.js"></script>
+
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; }
+    /* ── CSS Reset & base ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0A0F1C;
+      --surface:  #111827;
+      --card:     #1A2235;
+      --border:   rgba(255,255,255,0.08);
+      --accent:   #3B82F6;
+      --accent-d: rgba(59,130,246,0.15);
+      --text:     #E5E7EB;
+      --muted:    #6B7280;
+      --font:     'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html, body { height: 100%; background: var(--bg); font-family: var(--font); color: var(--text); }
+
+    /* ── Loading splash ───────────────────────────────── */
+    #cms-loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #cms-loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .splash-logo {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .splash-logo svg {
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      stroke: currentColor;
+    }
+
+    .splash-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .splash-sub {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .splash-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid rgba(59,130,246,0.2);
+      border-top-color: #3B82F6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Deep-override Decap CMS UI ───────────────────── */
+
+    /* App shell background */
+    #nc-root,
+    [class*="App__"],
+    [class*="AppBody"] {
+      font-family: var(--font) !important;
+      background: var(--bg) !important;
+    }
+
+    /* Top nav / header bar */
+    [class*="AppHeader"],
+    header[class*="Header"] {
+      background: rgba(10,15,28,0.9) !important;
+      backdrop-filter: blur(16px) !important;
+      border-bottom: 1px solid var(--border) !important;
+      box-shadow: none !important;
+    }
+
+    /* Sidebar */
+    [class*="Nav__"],
+    [class*="Sidebar"],
+    nav[class*="Nav"] {
+      background: var(--surface) !important;
+      border-right: 1px solid var(--border) !important;
+    }
+
+    /* Nav items */
+    [class*="Nav__"] a,
+    [class*="NavLink"] {
+      color: #9CA3AF !important;
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+      border-radius: 6px !important;
+      transition: all 0.15s ease !important;
+    }
+
+    [class*="Nav__"] a:hover,
+    [class*="NavLink"]:hover,
+    [class*="NavLink--isActive"],
+    [class*="NavLink"][class*="active"] {
+      color: #E5E7EB !important;
+      background: rgba(59,130,246,0.12) !important;
+    }
+
+    /* Main content area */
+    [class*="Page__"],
+    [class*="Collection__"],
+    main[class*="Main"] {
+      background: var(--bg) !important;
+    }
+
+    /* Cards / list items */
+    [class*="ListCard"],
+    [class*="EntryListing"],
+    [class*="Card__"] {
+      background: var(--card) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 10px !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
+      transition: border-color 0.2s ease, transform 0.2s ease !important;
+    }
+
+    [class*="ListCard"]:hover,
+    [class*="EntryListing"]:hover {
+      border-color: rgba(59,130,246,0.35) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Entry titles / text in list */
+    [class*="ListCard"] h2,
+    [class*="ListCard"] p,
+    [class*="EntryListing"] h2 {
+      color: var(--text) !important;
+    }
+
+    /* Editor panel */
+    [class*="EditorPanel"],
+    [class*="Editor__"] {
+      background: var(--surface) !important;
+      border-left: 1px solid var(--border) !important;
+    }
+
+    /* Widget / field labels */
+    [class*="FieldLabel"],
+    label[class*="Label"] {
+      color: #9CA3AF !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.06em !important;
+      margin-bottom: 6px !important;
+    }
+
+    /* Text inputs */
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    textarea,
+    [class*="TextInput"],
+    [class*="Input__"] input,
+    [class*="InputText"] {
+      background: var(--card) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      font-family: var(--font) !important;
+      font-size: 0.9375rem !important;
+      padding: 0.5rem 0.75rem !important;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    }
+
+    input[type="text"]:focus,
+    input[type="search"]:focus,
+    textarea:focus,
+    [class*="TextInput"]:focus-within,
+    [class*="InputText"]:focus-within {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2) !important;
+      outline: none !important;
+    }
+
+    /* Select dropdowns */
+    select,
+    [class*="Select__"] {
+      background: var(--card) !important;
+      color: var(--text) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      font-family: var(--font) !important;
+    }
+
+    /* Buttons — primary */
+    button[class*="success"],
+    button[class*="primary"],
+    [class*="Button"][class*="primary"],
+    [class*="Dropdown__"] button[class*="success"] {
+      background: var(--accent) !important;
+      color: #fff !important;
+      border: none !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      font-family: var(--font) !important;
+      padding: 0.5rem 1.25rem !important;
+      cursor: pointer !important;
+      transition: background 0.15s ease, box-shadow 0.15s ease !important;
+    }
+
+    button[class*="success"]:hover,
+    button[class*="primary"]:hover {
+      background: #2563EB !important;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.25) !important;
+    }
+
+    /* Buttons — secondary / ghost */
+    button[class*="Button"],
+    [class*="Button__"] {
+      border-radius: 8px !important;
+      font-family: var(--font) !important;
+      font-weight: 500 !important;
+      transition: all 0.15s ease !important;
+    }
+
+    /* Markdown editor toolbar */
+    [class*="Toolbar"],
+    [class*="toolbar"] {
+      background: var(--surface) !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+
+    [class*="Toolbar"] button,
+    [class*="toolbar"] button {
+      color: #9CA3AF !important;
+      border-radius: 4px !important;
+    }
+
+    [class*="Toolbar"] button:hover,
+    [class*="toolbar"] button:hover {
+      color: var(--text) !important;
+      background: rgba(255,255,255,0.06) !important;
+    }
+
+    /* Markdown editor content area */
+    [class*="Editor"] [contenteditable],
+    [class*="slate-editor"],
+    .notranslate[contenteditable] {
+      background: var(--card) !important;
+      color: var(--text) !important;
+      font-family: var(--font) !important;
+      line-height: 1.7 !important;
+      caret-color: var(--accent) !important;
+    }
+
+    /* Rich text / codemirror */
+    .CodeMirror,
+    .cm-editor {
+      background: #0D1117 !important;
+      color: #E6EDF3 !important;
+      font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace !important;
+      font-size: 14px !important;
+      border-radius: 8px !important;
+    }
+
+    .CodeMirror-cursor {
+      border-left-color: var(--accent) !important;
+    }
+
+    /* Search bar in collection list */
+    [class*="SearchInput"],
+    [class*="search-input"] {
+      background: var(--card) !important;
+      border-color: var(--border) !important;
+      color: var(--text) !important;
+      border-radius: 8px !important;
+    }
+
+    /* Tags / pills in list */
+    [class*="Tag"],
+    [class*="Badge"] {
+      background: rgba(59,130,246,0.1) !important;
+      color: #93C5FD !important;
+      border: 1px solid rgba(59,130,246,0.2) !important;
+      border-radius: 9999px !important;
+      font-size: 0.75rem !important;
+    }
+
+    /* Scrollbar (Chrome/Edge) */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <!-- Branded loading splash -->
+  <div id="cms-loading" role="status" aria-live="polite" aria-label="Loading CMS">
+    <div class="splash-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+    </div>
+    <div style="text-align:center;display:flex;flex-direction:column;gap:4px;">
+      <span class="splash-title">Data Science Diaries</span>
+      <span class="splash-sub">Content Manager</span>
+    </div>
+    <div class="splash-spinner" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    // Hide the splash screen as soon as Decap CMS starts to render
+    const hideSplash = () => {
+      const splash = document.getElementById('cms-loading');
+      if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+      }
+    };
+
+    // Watch for the CMS root element to be populated
+    const observer = new MutationObserver((mutations, obs) => {
+      const root = document.getElementById('nc-root');
+      if (root && root.children.length > 0) {
+        hideSplash();
+        obs.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // Fallback
+    window.addEventListener('load', () => setTimeout(hideSplash, 3000));
+  </script>
 </body>
 </html>
